@@ -2,8 +2,7 @@ package coinbase
 
 import com.softwaremill.sttp._
 import com.softwaremill.sttp.akkahttp.AkkaHttpBackend
-import ujson.Transformable
-import upickle.default._
+import upickle.default.{Reader, read}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -14,11 +13,11 @@ object Client {
 
   val bearerToken = ???
 
-  def getAsync[A](path: String)(reader: Transformable => A): Future[A] =
+  def getAsync[A: Reader](path: String): Future[A] =
     sttp.get(uri"$baseUri$path").send().map(res =>
       res.body.right.map { body =>
         val data = ujson.read(body)("data")
-        reader(data)
+        read(data)
       }.right.get
     )
 
