@@ -11,13 +11,13 @@ object Coinbase {
     val maxThreshold = args(1).toFloat
     val amountToTrade = args(2).toFloat
 
-   for {
-      rate <- Currencies.exchangeRates(BTC)
-      accountBalance <- Accounts.showAccount(EUR).map(_.balance.amount)
-    } yield {
-      if (accountBalance >= amountToTrade && rate < minThreshold) {
-        Buys.placeBuyOrder(amountToTrade, BTC, SEPA)
-      } else Future()
-    }
+//    for {
+//       rate <- Currencies.exchangeRates(BTC)
+//       accountBalance <- Accounts.showAccount(EUR).map(_.balance.amount)
+//     } yield {
+//       if (accountBalance >= amountToTrade && rate < minThreshold) {
+//         Buys.placeBuyOrder(amountToTrade, BTC, SEPA)
+//       } else Future()
+//     }
   }
 }

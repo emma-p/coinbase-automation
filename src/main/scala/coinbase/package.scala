@@ -2,13 +2,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import upickle.default._
+import coinbase.LocalDateTimeReadWriter._
 
 package object coinbase {
 
-  sealed trait Currency
-  case object BTC extends Currency
-  case object EUR extends Currency
-  case object ETH extends Currency
+  case class Currency(id: String, name: String, minTradingSize: Double)
 
   object Currency {
     implicit def readerWriter: ReadWriter[Currency] = macroRW
@@ -49,12 +47,23 @@ package object coinbase {
                     )
 
   object Account {
-    import LocalDateTimeReadWriter._
     implicit def readerWriter: ReadWriter[Account] = macroRW
   }
 
   object PaymentMethod extends Enumeration {
     type PaymentMethod = Value
     val SEPA, FIAT = Value
+  }
+
+  case class Rate(currency: Currency, value: Double)
+
+  object Rate {
+    implicit def readerWriter: ReadWriter[Rate] = macroRW
+  }
+
+  case class Time(iso: LocalDateTime, epoch: Long)
+
+  object Time {
+    implicit def readerWriter: ReadWriter[Time] = macroRW
   }
 }

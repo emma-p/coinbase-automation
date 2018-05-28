@@ -1,14 +1,11 @@
 package coinbase
 
-import Client._
-import akka.http.scaladsl.model.DateTime
+import coinbase.Client._
 import com.softwaremill.sttp._
-
-import scala.concurrent.Future
 import upickle.default._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
+import scala.concurrent.Future
 
 
 object Accounts {
