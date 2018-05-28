@@ -1,9 +1,9 @@
 package coinbase
 
 import scala.concurrent.Future
+
 import com.softwaremill.sttp._
 import Client._
-import coinbase.Currency.Currency
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Currencies {

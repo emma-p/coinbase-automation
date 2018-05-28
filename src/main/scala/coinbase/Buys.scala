@@ -1,22 +1,14 @@
 package coinbase
 
-import coinbase.Currency.Currency
-import coinbase.PaymentMethod.PaymentMethod
 import com.softwaremill.sttp._
 import Client._
+import coinbase.PaymentMethod.PaymentMethod
+import upickle.default._
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object Currency extends Enumeration {
-  type Currency = Value
-  val BTC, EUR, ETH = Value
-}
 
-object PaymentMethod extends Enumeration {
-  type PaymentMethod = Value
-  val SEPA, FIAT = Value
-}
 
 
 object Buys {

@@ -1,5 +1,4 @@
-import coinbase.{Accounts, Buys, Currencies}
-import coinbase.Currency._
+import coinbase._
 import coinbase.PaymentMethod._
 
 import scala.concurrent.Future
