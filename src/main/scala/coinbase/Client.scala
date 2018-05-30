@@ -11,15 +11,14 @@ object Client {
   val baseUri = "https://api.coinbase.com/v2/"
   implicit val sttpBackend = AkkaHttpBackend()
 
-  val bearerToken = ???
-
   //TODO remove get and deal with failure cases
   def getAsync[A: Reader](path: String): Future[A] =
-    sttp.get(uri"$baseUri$path").send().map(res =>
-      res.body.right.map { body =>
+    sttp.get(uri"$baseUri$path").send().map { res =>
+      res.body.toOption.map { body =>
         val data = ujson.read(body)("data")
         read(data)
-      }.right.get
-    )
+      }.get
+    }
+
 
 }

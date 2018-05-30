@@ -3,13 +3,16 @@ import java.time.format.DateTimeFormatter
 
 import upickle.default._
 import coinbase.LocalDateTimeReadWriter._
+import ujson.Js
 
 package object coinbase {
 
   case class Currency(id: String, name: String, minTradingSize: Double)
 
   object Currency {
-    implicit def readerWriter: ReadWriter[Currency] = macroRW
+    implicit val r = reader[Js.Value].map[Currency](
+      json => Currency(json("id").str, json("name").str, json("min_size").str.toDouble)
+    )
   }
 
   sealed trait AccountType
@@ -18,19 +21,20 @@ package object coinbase {
   case object Vault extends AccountType
 
   object AccountType {
-    implicit def readerWriter: ReadWriter[AccountType] = macroRW
+    implicit def reader: Reader[AccountType] = macroR
   }
 
   case class Balance(amount: Float, currency: Currency)
 
   object Balance {
-    implicit def readerWriter: ReadWriter[Balance] = macroRW
+    implicit def reader: Reader[Balance] = macroR
   }
 
   object LocalDateTimeReadWriter {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
     implicit val rw = readwriter[String].bimap[LocalDateTime](
-      dt => dt.format(DateTimeFormatter.ISO_INSTANT),
-      str => LocalDateTime.parse(str, DateTimeFormatter.ISO_INSTANT)
+      dt => dt.format(formatter),
+      str => LocalDateTime.parse(str, formatter)
     )
   }
 
@@ -47,7 +51,7 @@ package object coinbase {
                     )
 
   object Account {
-    implicit def readerWriter: ReadWriter[Account] = macroRW
+    implicit def reader: Reader[Account] = macroR
   }
 
   object PaymentMethod extends Enumeration {
@@ -58,12 +62,14 @@ package object coinbase {
   case class Rate(currency: Currency, value: Double)
 
   object Rate {
-    implicit def readerWriter: ReadWriter[Rate] = macroRW
+    implicit def reader: Reader[Rate] = macroR
   }
 
   case class Time(iso: LocalDateTime, epoch: Long)
 
   object Time {
-    implicit def readerWriter: ReadWriter[Time] = macroRW
+    implicit val r: Reader[Time] = reader[Js.Value].map[Time](
+      json => Time(read[LocalDateTime](json("iso")), json("epoch").num.toLong)
+    )
   }
 }
