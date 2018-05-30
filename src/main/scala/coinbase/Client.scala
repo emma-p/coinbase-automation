@@ -13,6 +13,7 @@ object Client {
 
   val bearerToken = ???
 
+  //TODO remove get and deal with failure cases
   def getAsync[A: Reader](path: String): Future[A] =
     sttp.get(uri"$baseUri$path").send().map(res =>
       res.body.right.map { body =>

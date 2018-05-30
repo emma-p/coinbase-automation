@@ -15,6 +15,7 @@ object Coinbase {
 //       rate <- Currencies.exchangeRates(BTC)
 //       accountBalance <- Accounts.showAccount(EUR).map(_.balance.amount)
 //     } yield {
+    //TODO add logic to see strength of a trend
 //       if (accountBalance >= amountToTrade && rate < minThreshold) {
 //         Buys.placeBuyOrder(amountToTrade, BTC, SEPA)
 //       } else Future()
