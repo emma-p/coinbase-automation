@@ -59,10 +59,12 @@ package object coinbase {
     val SEPA, FIAT = Value
   }
 
-  case class Rate(currency: Currency, value: Double)
+  case class ExchangeRate(currency: String, rates: Map[String, Double])
 
-  object Rate {
-    implicit def reader: Reader[Rate] = macroR
+  object ExchangeRate {
+    implicit val r = reader[Js.Value].map[ExchangeRate](
+      json => ExchangeRate(json("currency").str, json("rates").obj.mapValues(_.str.toDouble).toMap)
+    )
   }
 
   case class Time(iso: LocalDateTime, epoch: Long)

@@ -11,7 +11,7 @@ object Coinbase {
 //    val minThreshold = args(0).toFloat
 //    val maxThreshold = args(1).toFloat
 //    val amountToTrade = args(2).toFloat
-    ServerTime.time.map(seq =>
+    ExchangeRates.exchangeRates(None).map(seq =>
       println(s"seq is ${seq}")
     ).failed.foreach(e =>
       println(s"Future failed: ${e}")
